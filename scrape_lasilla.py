@@ -28,17 +28,17 @@ soup = BeautifulSoup(r.text, 'html.parser')
 # Get the artcle
 article = soup.find_all("div", "body-node-historia")
 autor_information = soup.find_all("div", "author author-top")
-try:
-    autor = autor_information[0].find("div", "editor").find("a").text
-except TypeError:
+
+autor = autor_information[0].find("div", "editor").find("a").text
+
+if autor is None:
     autor = "No disponible"
-    print("No se encontró un autor para el artículo")
-try:
-    fecha_info = autor_information[0].find("div", "editor").find_all("span")[1].text
-    fecha = re.match(r"\n(.)", fecha_info)
-except TypeError:
+
+fecha_info = autor_information[0].find("div", "editor").find_all("span")[1].text
+fecha = re.match(r"\n(.)", fecha_info)
+
+if fecha is None:
     fecha = "No disponible"
-    print("No encontré fecha para el artículo")
 
 # Create the word document that will store the info
 document = Document()
