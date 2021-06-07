@@ -10,15 +10,14 @@ The website I will scrape is la silla vacia
 Let's add another feature. It writes a word document with the paper
 '''
 
-from docx.shared import Inches
 from docx import Document
 import requests
 from bs4 import BeautifulSoup
 import re
 
-#La url debería ser input del usuario
 #url = "https://lasillavacia.com/los-comunes-le-ofrecen-todo-petro-cambio-nada-concreto-81881"
 url = input('Escriba la url de La Silla: ')
+
 name_info = re.match("(https://lasillavacia.com/)(.*\D)", url)
 
 name = name_info.group(2).replace("-", " ")[0:20]
@@ -29,10 +28,18 @@ soup = BeautifulSoup(r.text, 'html.parser')
 # Get the artcle
 article = soup.find_all("div", "body-node-historia")
 autor_information = soup.find_all("div", "author author-top")
-autor = autor_information[0].find("div", "editor").find("a").text
-fecha_info = autor_information[0].find("div", "editor").find_all("span")[1].text
+try:
+    autor = autor_information[0].find("div", "editor").find("a").text
+except TypeError:
+    autor = "No disponible"
+    print("No se encontró un autor para el artículo")
+try:
+    fecha_info = autor_information[0].find("div", "editor").find_all("span")[1].text
+    fecha = re.match(r"\n(.)", fecha_info)
+except TypeError:
+    fecha = "No disponible"
+    print("No encontré fecha para el artículo")
 
-fecha = re.match(r"\n(.)", fecha_info)
 # Create the word document that will store the info
 document = Document()
 
