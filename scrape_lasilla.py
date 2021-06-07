@@ -35,7 +35,7 @@ if autor is None:
     autor = "No disponible"
 
 fecha_info = autor_information[0].find("div", "editor").find_all("span")[1].text
-fecha = re.match(r"\n(.)", fecha_info)
+fecha = re.match(r' .\n(.*)', fecha_info).group(1)
 
 if fecha is None:
     fecha = "No disponible"
@@ -48,5 +48,5 @@ document.add_paragraph('Autor: ' + autor, style = 'List Bullet')
 document.add_paragraph('Fecha: ' + fecha, style = 'List Bullet')
 p = document.add_paragraph(article[0].text)
 
-document.save(name + '.docx')
+document.save(name + 'Scrapped.docx')
 print("Documento Listo")
